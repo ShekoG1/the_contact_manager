@@ -5,87 +5,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".ContactFormActivity">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btnSaveContact"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
-        <!-- Contact Name -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilContactName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Name">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".ContactFormActivity"
+            tools:layout_editor_absoluteX="61dp"
+            tools:layout_editor_absoluteY="-15dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etContactName"
+            <!-- Contact Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilContactName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"/>
+                android:hint="Contact Name">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etContactName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-        <!-- Contact Email -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilContactEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Email">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etContactEmail"
+            <!-- Contact Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilContactEmail"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:hint="Contact Email">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etContactEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
 
-        <!-- Contact Phone Number -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilContactPhone"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contact Phone Number">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etContactPhone"
+            <!-- Contact Phone Number -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilContactPhone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone"/>
+                android:hint="Contact Phone Number">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etContactPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
 
-        <!-- Contact Birthday (DatePicker) -->
-        <TextView
-            android:id="@+id/tvBirthdayLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contact Birthday"
-            android:layout_marginTop="16dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false"/>
+            <!-- Contact Birthday (DatePicker) -->
+            <TextView
+                android:id="@+id/tvBirthdayLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Contact Birthday" />
 
-        <!-- Save Button -->
-        <Button
-            android:id="@+id/btnSaveContact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Save"/>
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="407dp"
+                android:calendarViewShown="false" />
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="143dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="onBackButtonClick"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnSaveContact"
+        android:layout_width="143dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="onSaveButtonClick"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

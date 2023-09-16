@@ -107,6 +107,49 @@ public class ContactDAO {
         return contactList;
     }
 
+    // Search contacts by name or email
+    public List<ContactModel> searchContacts(String query) {
+        List<ContactModel> contactList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Define the columns you want to retrieve
+        String[] projection = {
+                DatabaseHelper.COLUMN_ID,
+                DatabaseHelper.COLUMN_NAME,
+                DatabaseHelper.COLUMN_EMAIL,
+                DatabaseHelper.COLUMN_PHONE_NUMBER,
+                DatabaseHelper.COLUMN_BIRTHDAY
+        };
+
+        // Define the WHERE clause to search by name or email
+        String selection = DatabaseHelper.COLUMN_NAME + " LIKE ? OR " +
+                DatabaseHelper.COLUMN_EMAIL + " LIKE ?";
+
+        // Arguments for the WHERE clause
+        String[] selectionArgs = {"%" + query + "%", "%" + query + "%"};
+
+        Cursor cursor = db.query(
+                DatabaseHelper.TABLE_CONTACTS,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                ContactModel contact = cursorToContact(cursor);
+                contactList.add(contact);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return contactList;
+    }
+
     // Disable suppression to show IDE errors
     @SuppressLint("Range")
     private ContactModel cursorToContact(Cursor cursor) {

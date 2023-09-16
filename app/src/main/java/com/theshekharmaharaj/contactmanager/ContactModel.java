@@ -6,6 +6,7 @@ public class ContactModel {
     private String email;
     private String phoneNumber;
     private String birthday;
+    private String itemID;
 
     // Default constructor
     public ContactModel() {
@@ -13,7 +14,7 @@ public class ContactModel {
     }
 
     // Parameterized constructor
-    public ContactModel(String name, String email, String phoneNumber, String birthday) {
+    public ContactModel(String id, String name, String email, String phoneNumber, String birthday) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
