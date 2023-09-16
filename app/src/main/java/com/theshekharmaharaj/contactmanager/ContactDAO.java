@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactDAO {
@@ -104,6 +106,31 @@ public class ContactDAO {
             }
             cursor.close();
         }
+        return contactList;
+    }
+
+    public List<ContactModel> sortContacts(String sortBy) {
+        List<ContactModel> contactList = getAllContacts();
+
+        switch (sortBy) {
+            case "Name":
+                contactList.sort(Comparator.comparing(ContactModel::getName));
+                break;
+
+            case "Email Address":
+                contactList.sort(Comparator.comparing(ContactModel::getEmail));
+                break;
+
+            case "Birthday":
+                contactList.sort(Comparator.comparing(ContactModel::getBirthday));
+                break;
+
+            case "None":
+            default:
+                // No sorting needed
+                break;
+        }
+
         return contactList;
     }
 

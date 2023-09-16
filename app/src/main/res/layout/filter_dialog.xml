@@ -1,0 +1,42 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Radio buttons for selecting a column to filter by -->
+    <RadioGroup
+        android:id="@+id/radioGroupColumns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioNone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/radioName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"/>
+
+        <RadioButton
+            android:id="@+id/radioEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email Address"/>
+
+    </RadioGroup>
+
+    <!-- Text field for entering the filter value -->
+    <EditText
+        android:id="@+id/etFilterValue"
+        android:layout_width="match_parent" android:layout_height="50dp"/>
+
+</LinearLayout>
+

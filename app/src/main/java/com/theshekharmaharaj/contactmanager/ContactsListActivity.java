@@ -16,11 +16,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import com.theshekharmaharaj.contactmanager.ContactsAdapter;
 
 public class ContactsListActivity extends AppCompatActivity implements OnItemClickListener{
@@ -77,9 +81,7 @@ public class ContactsListActivity extends AppCompatActivity implements OnItemCli
                 contactDAO.open();
                 contactDAO.deleteContact(id);
                 contactDAO.close();
-
                 refreshAdapterData();
-
                 dialog.dismiss();  // Dismiss the dialog
             }
         });
@@ -98,6 +100,83 @@ public class ContactsListActivity extends AppCompatActivity implements OnItemCli
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private int selectedOption = 0;  // Initialize the selected option
+
+    public void showRadioButtonDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select an option");
+
+        // Set sorting options
+        final String[] options = {"None","Name", "Email Address", "Birthday"};
+
+        builder.setSingleChoiceItems(options, selectedOption, (dialog, which) -> {
+            // Update the selected option
+            selectedOption = which;
+        });
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Handle the OK button click
+            Toast.makeText(this, "Selected: " + options[selectedOption], Toast.LENGTH_SHORT).show();
+            contactDAO.open();
+            List<ContactModel> contacts = contactDAO.sortContacts(options[selectedOption]);
+            contactDAO.close();
+            refreshAdapterData(contacts);
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // Handle the Cancel button click (if needed)
+            dialog.dismiss();
+        });
+        builder.create().show();
+    }
+
+    public void showFilterDialog(View view) {
+        // Build the dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Filter Contacts");
+
+        // Inflate the custom layout for the dialog
+        View dialogView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        builder.setView(dialogView);
+
+        // Get the radio group and text field from the dialog layout
+        RadioGroup radioGroupColumns = dialogView.findViewById(R.id.radioGroupColumns);
+        EditText etFilterValue = dialogView.findViewById(R.id.etFilterValue);
+
+        // Set up the positive button click listener
+        builder.setPositiveButton("Filter", (dialog, which) -> {
+            // Get the selected radio button's text (the selected column)
+            int selectedRadioButtonId = radioGroupColumns.getCheckedRadioButtonId();
+            RadioButton selectedRadioButton = dialogView.findViewById(selectedRadioButtonId);
+            String selectedColumn = selectedRadioButton.getText().toString();
+
+            // Get the filter value from the text field
+            String filterValue = etFilterValue.getText().toString();
+
+            //Format column
+            switch (selectedColumn){
+                case "Name":
+                    selectedColumn = "name";
+                    break;
+
+                case "Email Address":
+                    selectedColumn = "email";
+
+                default:
+                    selectedColumn = "None";
+            }
+
+            // Call the method to filter based on the selected column and filter value
+            filterData(selectedColumn, filterValue);
+        });
+
+        // Set up the negative button click listener
+        builder.setNegativeButton("Cancel", null);
+
+        // Show the dialog
+        builder.create().show();
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -181,4 +260,39 @@ public class ContactsListActivity extends AppCompatActivity implements OnItemCli
         adapter = new ContactsAdapter(this,contactsList,this);
         recyclerView.setAdapter(adapter);
     }
+
+    private void filterData(String filterColumn, String filterValue){
+        if(filterColumn != "None") {
+            // Validate column value
+            if (filterColumn != "name" && filterColumn != "email") {
+                Toast.makeText(this, "Invalid column selected", Toast.LENGTH_SHORT).show();
+            }
+
+            contactDAO.open();
+//            List<ContactModel> contacts = contactDAO.getContactsByAttribute(filterColumn, filterValue);
+            List<ContactModel> contacts = contactDAO.getAllContacts();
+            contactDAO.close();
+            contacts = filterContactsByColumn(contacts,filterColumn,filterValue);
+            Toast.makeText(this, ""+contacts, Toast.LENGTH_SHORT).show();
+            refreshAdapterData(contacts);
+        }else{
+            fetchContacts();
+        }
+    }
+
+    private List<ContactModel> filterContactsByColumn(List<ContactModel> contacts, String filterColumn, String filterValue) {
+        return contacts.stream()
+                .filter(contact -> {
+                    switch (filterColumn) {
+                        case "name":
+                            return contact.getName().equalsIgnoreCase(filterValue);
+                        case "email":
+                            return contact.getEmail().equalsIgnoreCase(filterValue);
+                        default:
+                            return false;  // Handle unknown column
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
 }
