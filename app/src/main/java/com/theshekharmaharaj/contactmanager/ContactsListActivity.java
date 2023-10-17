@@ -61,6 +61,7 @@ public class ContactsListActivity extends AppCompatActivity implements OnItemCli
             deleteButton.setText("Cancel");
             createButton.setVisibility(View.INVISIBLE);
             isDelete = true;
+            Toast.makeText(this, "Click a contact to select it for deletion", Toast.LENGTH_LONG).show();
         }else{
             deleteButton.setText("Delete");
             createButton.setVisibility(View.VISIBLE);
